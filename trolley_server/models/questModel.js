@@ -74,13 +74,13 @@ questSchema.statics.selectSubNotCompleted = function(userIdx, userLevel) {
 }
 
 questSchema.statics.showAdQuestCom = function (userIdx, userLevel) {
-    return this.find({"ad": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "image": true})
+    return this.find({"ad": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "image": true, "sub_title": true})
                 .where('level').equals(userLevel);
 
 }
 
 questSchema.statics.showAdQuestNotCom = function (userIdx, userLevel) {
-    return this.find({"ad": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "image": true})
+    return this.find({"ad": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "image": true, "sub_title": true})
                 .where('level').equals(userLevel);
 }
 
