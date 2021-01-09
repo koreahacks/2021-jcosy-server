@@ -64,7 +64,9 @@ questSchema.statics.selectSubCompleted = function(userIdx, userLevel) {
 
 questSchema.statics.selectSubNotCompleted = function(userIdx, userLevel) {
     return this.find({"category": 2, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true, "image": true})
-                .where('level').gt(0).lt(userLevel+1);
+                .where('level').gt(0).lt(userLevel+1)
+                .sort('-level')
+                .limit(2);
     // M.findOne({list: {$ne: 'A'}}
 }
 

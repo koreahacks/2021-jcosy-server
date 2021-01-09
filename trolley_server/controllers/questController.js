@@ -211,8 +211,10 @@ const quest = {
             //console.log('updatedLevelResult : ', updatedLevelResult);
             
             return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.PARTICIPATED_SUCCESS, {
+                category: partInc.category, 
                 user_level: updatedLevelResult.level,
-                main_stamp: updatedLevelResult.main_stamp
+                main_stamp: updatedLevelResult.main_stamp,
+                sub_stamp: updatedLevelResult.sub_stamp
             }));
 
         }catch(err){
