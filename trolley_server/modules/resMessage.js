@@ -7,9 +7,6 @@ module.exports = {
     READ_TIME_FAIL: "타임어택 조회 실패",
     READ_TIME_SUCCESS: "타임어택 조회 성공",
 
-
-    
-
     //사용자 정보
     USER_REGISTER_SUCCESS: "사용자 등록 성공",
     GET_MY_INFO_SUCCESS: "내 정보 가져오기 성공",
