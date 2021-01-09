@@ -1,1 +1,1 @@
-# 2021-jcosy-server
+# 2021-jcozy-server
