@@ -7,10 +7,11 @@ var date = moment().format('YYYY-MM-DD HH:mm:ss');
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     image: {type: String, required: true},
-    level: {type: Number, required: true},
+    level: {type: Number, required: true, default: 0}, // 타임어택: 0 (레벨 없음) 
     category: {type: Number, required: true},//0: 타임어택, 1: 메인, 2: 서브
     ad: {type: Number, default:0},//0: 광고 아님, 1: 광고
     how_to: {type: String, required: true},
+    sub_title: {type: String, required: true},
     description: {type: String, required: true},
     participant: {type: Number, default: 0},
     
