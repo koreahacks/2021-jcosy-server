@@ -42,15 +42,19 @@ questSchema.statics.showMainQuest = function(userIdx) {
     // const party_list = this.find({"category": 1}, {"participant_list": true});
     // console.log('party: ', party_list);
     // return this.find({"participant_list.userIdx" : mongoose.Types.ObjectId(userIdx)});
-    return this.find({"category": 1}, {"title": true, "level": true, "participant": true, "completed": true});
+    return this.find({"category": 1}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
+}
+
+questSchema.statics.countParticipant = function() {
+    return this.countDocuments({name: "participant_list.userIdx"});
 }
 
 questSchema.statics.selectCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "completed": true});
+    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
 }
 
 questSchema.statics.selectNotCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true});
+    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
     // M.findOne({list: {$ne: 'A'}}
 }
 
