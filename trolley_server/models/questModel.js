@@ -49,12 +49,25 @@ questSchema.statics.countParticipant = function() {
     return this.countDocuments({name: "participant_list.userIdx"});
 }
 
-questSchema.statics.selectCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
+questSchema.statics.selectMainCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "completed": true})
+                .where('level').equals(userLevel);
 }
 
-questSchema.statics.selectNotCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
+questSchema.statics.selectMainNotCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true})
+                .where('level').equals(userLevel);
+    // M.findOne({list: {$ne: 'A'}}
+}
+
+questSchema.statics.selectSubCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 2, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "completed": true})
+                .where('level').gt(0).lt(userLevel+1);
+}
+
+questSchema.statics.selectSubNotCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 2, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true})
+                .where('level').gt(0).lt(userLevel+1);
     // M.findOne({list: {$ne: 'A'}}
 }
 
