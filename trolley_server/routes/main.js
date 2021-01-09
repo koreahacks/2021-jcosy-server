@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const QuestController = require('../controllers/questController');
 
+router.post('/quest/register', QuestController.register);
 module.exports = router;
+

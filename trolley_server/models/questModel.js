@@ -23,7 +23,10 @@ const questSchema = new mongoose.Schema({
     running_time: {type: Number, required: false},//분
 });
 
-
+questSchema.statics.register = function(payload) {
+    const quest = new this(payload);
+    return quest.save();
+}
 
 /**
 
