@@ -1,4 +1,5 @@
 const UserModel = require('../models/userModel');
+const QuestModel = require('../models/questModel');
 const statusCode = require('../modules/statusCode');
 const util = require('../modules/util');
 const resMessage = require('../modules/resMessage');
@@ -55,7 +56,27 @@ const user = {
         }
     },
     showHistory: async(req, res)=>{
-
+        //조회해서 사람들의 정보가 잘 들어갔으면 테스트 해볼 수 있음.
+        const userIdx = req.decoded._id;
+        try{
+            const historyResult = await QuestModel.showHistory(userIdx);
+            if(historyResult.length==0){
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_HISTORY))
+            }
+            let toSend = [];
+            for (var i =0;i<historyResult.length; i++){
+                toSend.push({
+                    level: historyResult[i].level,
+                    title: historyResult[i].title,
+                    image: historyResult[i].image,
+                    completed_at: historyResult[i].participant_list[0].completed_at
+                });
+            }
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.GET_HISTORY_SUCCESS, toSend));
+        }catch(err){
+            console.log(err);
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
     },
     showStamp: async(req, res)=>{
         const userIdx = req.decoded._id;
