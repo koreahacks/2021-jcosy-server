@@ -33,8 +33,26 @@ questSchema.statics.register = function(payload) {
 }
 
 // userIdx가 participant_list 안에 있으면 completed: 1 append 해서 json 반환
-questSchema.statics.showTimeQuest = function(userIdx) {
+questSchema.statics.showTimeQuest = function() {
     return this.find({"category": 0}, {"title": true, "period": true, "participant": true, "image": true});
+}
+
+questSchema.statics.showMainQuest = function(userIdx) {
+    // const party_list = this.find({"category": 1}, {"participant_list": true});
+    // console.log('party: ', party_list);
+    return this.find({"category": 1}, {"title": true, "level": true, "participant": true, "participant_list": true});
+}
+
+questSchema.statics.showSubQuest = function(userIdx) {
+
+}
+
+questSchema.statics.updateParticipantList = function(payload, questIdx) {
+    return this.findOneAndUpdate({"_id": questIdx}, {$push: {
+                                                        participant_list: {
+                                                            userIdx: payload.userIdx,
+                                                            img_url: payload.img_url
+                                                        }}}, {new: true});
 }
 
 /**
