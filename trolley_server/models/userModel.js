@@ -49,7 +49,11 @@ userSchema.statics.subParticipated = function(userIdx){
 
 userSchema.statics.updateLevel = function(userIdx, payload){
     return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, payload, {new: true});
+}
 
+userSchema.statics.showProfile = function (userIdx) {
+    return this.findOne({"_id":mongoose.Types.ObjectId(userIdx)})
+                .select('name profileImg');
 }
 /**
  * User.find()
