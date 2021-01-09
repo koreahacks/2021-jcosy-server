@@ -13,20 +13,22 @@ const questSchema = new mongoose.Schema({
     how_to: {type: String, required: true},
     description: {type: String, required: true},
     participant: {type: Number, default: 0},
-    /*
+    
     participant_list: [{
         userIdx: {type: mongoose.Schema.Types.ObjectId, ref: "user", required: true},
         img_url: {type: String, required: true},
         completed_at: {type: String, default: date}
     }],
-    */
-    participant_list: {type: Array, default: []},
+    
     //타임어택만
     period: {type: String, required: false},//string 시작 - 끝 시간
     running_time: {type: Number, required: false},//분
 });
 
-
+questSchema.statics.register = function(payload) {
+    const quest = new this(payload);
+    return quest.save();
+}
 
 /**
 

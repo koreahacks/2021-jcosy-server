@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const upload = require('../modules/multer');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const QuestController = require('../controllers/questController');
 
+router.post('/quest/register', upload.single('image'), QuestController.register);
 module.exports = router;
+
