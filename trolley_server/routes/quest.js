@@ -7,8 +7,9 @@ const AuthMiddleware = require('../middlewares/auth');
 router.post('/quest/register', upload.single('image'), QuestController.register);
 
 router.get('/time', AuthMiddleware.checkToken, QuestController.showTimeQuest);
-router.get('/quest', AuthMiddleware.checkToken, QuestController.showMainQuest);
+router.get('/main', AuthMiddleware.checkToken, QuestController.showMainQuest);
 router.get('/sub', AuthMiddleware.checkToken, QuestController.showSubQuest);
+router.get('/ad', AuthMiddleware.checkToken, QuestController.showAdQuest);
 
 router.put('/list/:questIdx', AuthMiddleware.checkToken, QuestController.updateParticipantList);
 

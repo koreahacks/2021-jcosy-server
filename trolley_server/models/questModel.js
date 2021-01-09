@@ -50,16 +50,31 @@ questSchema.statics.countParticipant = function() {
 }
 
 questSchema.statics.selectCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
+    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
 }
 
 questSchema.statics.selectNotCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
+    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
     // M.findOne({list: {$ne: 'A'}}
 }
 
-questSchema.statics.showSubQuest = function() {
-    return this.find({"category": 2}, {"title": true, "level": true, "participant": true, "participant_list": true, "completed": true});
+questSchema.statics.showSubQuestCom = function(userIdx) {
+    return this.find({"category": 2, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "participant_list": true, "completed": true, "image": true});
+}
+
+questSchema.statics.showSubQuestNotCom = function(userIdx) {
+    return this.find({"category": 2, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
+    // M.findOne({list: {$ne: 'A'}}
+}
+
+questSchema.statics.showAdQuestCom = function (userIdx) {
+    return this.find({"ad": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "image": true});
+
+}
+
+questSchema.statics.showAdQuestNotCom = function (userIdx) {
+    return this.find({"ad": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "image": true});
+    
 }
 
 questSchema.statics.showRemainSubQuest = function () {
@@ -74,11 +89,9 @@ questSchema.statics.updateParticipantList = function(payload, questIdx) {
                                                         }}}, {new: true});
 }
 
-
 questSchema.statics.participantIncrement = function(questIdx){
     return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(questIdx)}, {$inc: {'participant':1}}, {new: true})
 }
-
 
 questSchema.statics.showHistory = function(userIdx){
     return this.find({"participant_list.userIdx" : mongoose.Types.ObjectId(userIdx)})
