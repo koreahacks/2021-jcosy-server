@@ -1,5 +1,3 @@
-<center>Trolly</center>
-
 <div align="center" style="display:flex;">
 	<img src="./trolley_server/public/images/trolly.png" width="300">
 </div>
@@ -25,7 +23,7 @@ MZ세대 롤코족의 주류인 대학생들을 위해 저희 서비스는 트�
 
 ## 2. Features
 <div align="center" style="display:flex;">
-	<img src="./trolley_server/public/images/trolly2.png" width="80%">
+	<img src="./trolley_server/public/images/trolly2.png" width="90%">
 </div>
 
 
@@ -63,7 +61,6 @@ MZ세대 롤코족의 주류인 대학생들을 위해 저희 서비스는 트�
     "aws-sdk": "^2.824.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
-    // "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "express": "^4.16.4",
     "http-errors": "~1.6.3",
@@ -76,8 +73,6 @@ MZ세대 롤코족의 주류인 대학생들을 위해 저희 서비스는 트�
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "nodemon": "^2.0.7",
-    // "pbkdf2": "^3.1.1",
-    // "rand-token": "^1.0.1"
   }
 ```
 
