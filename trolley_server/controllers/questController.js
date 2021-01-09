@@ -150,9 +150,9 @@ const quest = {
         try {
             const result = await QuestModel.updateParticipantList(payload, questIdx);
             if (!result) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.UPDATE_LIST_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, result));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.UPDATE_LIST_SUCCESS, result));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
@@ -238,9 +238,9 @@ const quest = {
             console.log('result: ', result);
 
             if (!result) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_DETAIL_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, result));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_DETAIL_SUCCESS, result));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
@@ -254,9 +254,9 @@ const quest = {
             console.log(result);
 
             if (!result) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.SHOW_IMAGES_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, result[0].participant_list));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SHOW_IMAGES_SUCCESS, result[0].participant_list));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
@@ -289,9 +289,9 @@ const quest = {
             // const profile = await UserModel.showProfile(result[i].userIdx);
 
             if (!arr) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.SHOW_IMAGES_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, arr));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SHOW_IMAGES_SUCCESS, arr));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));

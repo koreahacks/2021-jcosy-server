@@ -40,6 +40,18 @@ module.exports = {
     READ_AD_FAIL: "광고 조회 실패",
     READ_AD_SUCCESS: "광고 조회 성공",
 
+    // 업데이트 관련
+    UPDATE_LIST_FAIL: "업데이트 실패",
+    UPDATE_LIST_SUCCESS: "업데이트 성공",
+
+    // 세부 정보 조회
+    READ_DETAIL_FAIL: "세부 정보 조회 실패",
+    READ_DETAIL_SUCCESS: "세부 정보 조회 성공",
+
+    // 사진 정보 조회
+    SHOW_IMAGES_FAIL: "후기 조회 실패",
+    SHOW_IMAGES_SUCCESS: "후기 조회 성공",
+
     // 인증
     EMPTY_TOKEN: '토큰 값이 없습니다.',
     EXPIRED_TOKEN: '토큰 값이 만료되었습니다.',
