@@ -7,7 +7,7 @@ var date = moment().format('YYYY-MM-DD HH:mm:ss');
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     image: {type: String, required: true},
-    level: {type: Number, required: true, default: 0}, // 타임어택: 0 (레벨 없음) 
+    level: {type: Number, required: true},
     category: {type: Number, required: true},//0: 타임어택, 1: 메인, 2: 서브
     ad: {type: Number, default:0},//0: 광고 아님, 1: 광고
     how_to: {type: String, required: true},
@@ -45,36 +45,38 @@ questSchema.statics.showMainQuest = function(userIdx) {
     return this.find({"category": 1}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true});
 }
 
-questSchema.statics.countParticipant = function() {
-    return this.countDocuments({name: "participant_list.userIdx"});
+
+questSchema.statics.selectMainCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "completed": true, "image": true})
+                .where('level').equals(userLevel);
 }
 
-questSchema.statics.selectCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
-}
-
-questSchema.statics.selectNotCompleted = function(userIdx) {
-    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
+questSchema.statics.selectMainNotCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true, "image": true})
+                .where('level').equals(userLevel);
     // M.findOne({list: {$ne: 'A'}}
 }
 
-questSchema.statics.showSubQuestCom = function(userIdx) {
-    return this.find({"category": 2, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "participant_list": true, "completed": true, "image": true});
+questSchema.statics.selectSubCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 2, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "completed": true, "image": true})
+                .where('level').gt(0).lt(userLevel+1);
 }
 
-questSchema.statics.showSubQuestNotCom = function(userIdx) {
-    return this.find({"category": 2, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "completed": true, "image": true});
+questSchema.statics.selectSubNotCompleted = function(userIdx, userLevel) {
+    return this.find({"category": 2, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "completed": true, "image": true})
+                .where('level').gt(0).lt(userLevel+1);
     // M.findOne({list: {$ne: 'A'}}
 }
 
-questSchema.statics.showAdQuestCom = function (userIdx) {
-    return this.find({"ad": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant_list": true, "participant": true, "image": true});
+questSchema.statics.showAdQuestCom = function (userIdx, userLevel) {
+    return this.find({"ad": 1, "participant_list.userIdx" : userIdx}, {"title": true, "level": true, "participant": true, "image": true})
+                .where('level').equals(userLevel);
 
 }
 
-questSchema.statics.showAdQuestNotCom = function (userIdx) {
-    return this.find({"ad": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant_list": true, "participant": true, "image": true});
-    
+questSchema.statics.showAdQuestNotCom = function (userIdx, userLevel) {
+    return this.find({"ad": 1, "participant_list.userIdx":{$ne: userIdx}}, {"title": true, "level": true, "participant": true, "image": true})
+                .where('level').equals(userLevel);
 }
 
 questSchema.statics.showRemainSubQuest = function () {

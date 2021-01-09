@@ -39,19 +39,18 @@ const quest = {
     },
     showMainQuest: async (req, res) => {
         const userIdx = req.decoded._id;
-        
         try {
-            const cc = await QuestModel.selectCompleted(userIdx);
-            const nc = await QuestModel.selectNotCompleted(userIdx);
+            const userLevelResult = await UserModel.getUserLevel(userIdx);
+            const userLevel = userLevelResult[0].level
+            const cc = await QuestModel.selectMainCompleted(userIdx, userLevel);
+            const nc = await QuestModel.selectMainNotCompleted(userIdx, userLevel);
 
             cc.forEach(e => {
                 e.completed = 1;
-                e.participant = e.participant_list.length;
             });
 
             nc.forEach(e => {
                 e.completed = 0;
-                e.participant = e.participant_list.length;
             });
 
             const result = cc.concat(nc);
@@ -69,25 +68,25 @@ const quest = {
         const userIdx = req.decoded._id;
         
         try {
-            const cc = await QuestModel.showSubQuestCom(userIdx);
-            const nc = await QuestModel.showSubQuestNotCom(userIdx);
+            const userLevelResult = await UserModel.getUserLevel(userIdx);
+            const userLevel = userLevelResult[0].level;
+            const cc = await QuestModel.selectSubCompleted(userIdx, userLevel);
+            const nc = await QuestModel.selectSubNotCompleted(userIdx, userLevel);
 
             cc.forEach(e => {
                 e.completed = 1;
-                e.participant = e.participant_list.length;
             });
 
             nc.forEach(e => {
                 e.completed = 0;
-                e.participant = e.participant_list.length;
             });
 
             // const result = cc.concat(nc);
 
             if (!nc) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_MAIN_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_MAIN_SUCCESS, nc));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, nc));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
@@ -97,25 +96,25 @@ const quest = {
         const userIdx = req.decoded._id;
 
         try {
-            const cc = await QuestModel.showAdQuestCom(userIdx);
-            const nc = await QuestModel.showAdQuestNotCom(userIdx);
+            const userLevelResult = await UserModel.getUserLevel(userIdx);
+            const userLevel = userLevelResult[0].level;
+            const cc = await QuestModel.showAdQuestCom(userIdx, userLevel);
+            const nc = await QuestModel.showAdQuestNotCom(userIdx, userLevel);
 
             cc.forEach(e => {
                 e.completed = 1;
-                e.participant = e.participant_list.length;
             });
 
             nc.forEach(e => {
                 e.completed = 0;
-                e.participant = e.participant_list.length;
             });
 
             // const result = cc.concat(nc);
 
             if (!nc) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_MAIN_FAIL));
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_AD_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_MAIN_SUCCESS, nc));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AD_SUCCESS, nc));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));

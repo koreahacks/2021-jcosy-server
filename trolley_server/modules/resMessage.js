@@ -36,6 +36,10 @@ module.exports = {
     READ_SUB_SUCCESS: "서브 조회 성공",
     READ_SUB_ALL: "서브 더보기 조회 성공",
 
+    // 광고 조회
+    READ_AD_FAIL: "광고 조회 실패",
+    READ_AD_SUCCESS: "광고 조회 성공",
+
     // 인증
     EMPTY_TOKEN: '토큰 값이 없습니다.',
     EXPIRED_TOKEN: '토큰 값이 만료되었습니다.',
