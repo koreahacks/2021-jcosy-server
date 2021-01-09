@@ -221,6 +221,81 @@ const quest = {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
+    },
+    showDetail: async(req, res) => {
+        const userIdx = req.decoded._id;
+        const questIdx = req.params.questIdx;
+
+        try {
+            const result = await QuestModel.showDetail(userIdx, questIdx);
+            const cc = await QuestModel.showDetailCom(userIdx, questIdx);
+            if (cc) {
+                result.completed = 1;
+            } else {
+                result.completed = 0;
+            }
+
+            console.log('result: ', result);
+
+            if (!result) {
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+            }
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, result));
+        } catch (err) {
+            console.log(err);
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+    },
+    showImagesByQuest: async(req, res) => {
+        const questIdx = req.params.questIdx;
+
+        try {
+            const result = await QuestModel.showImagesByQuest(questIdx);
+            console.log(result);
+
+            if (!result) {
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+            }
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, result[0].participant_list));
+        } catch (err) {
+            console.log(err);
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+    },
+    showRealTimeImages: async(req, res) => {
+        const questIdx = req.params.questIdx;
+
+        try {
+            const result = await QuestModel.showRealTimeImages(questIdx);
+            console.log(result);
+            
+            var arr = [];
+            for (var i in result[0].participant_list){
+                console.log('i:', i);
+                var userIdx = result[0].participant_list[i].userIdx;
+                var profile = await UserModel.showProfile(userIdx);
+                // console.log('profile: ',profile);
+                // console.log(profile.name);
+                arr.push({
+                    _id: userIdx,
+                    name: profile.name,
+                    profileImg: profile.profileImg,
+                    img_url: result[0].participant_list[i].img_url,
+                    completed_at: result[0].participant_list[i].completed_at
+                });
+            }
+            console.log(arr);
+            
+            // const profile = await UserModel.showProfile(result[i].userIdx);
+
+            if (!arr) {
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+            }
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, arr));
+        } catch (err) {
+            console.log(err);
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
     }
 }
 

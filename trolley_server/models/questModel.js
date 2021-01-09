@@ -23,8 +23,9 @@ const questSchema = new mongoose.Schema({
     }],
     
     //타임어택만
-    period: {type: String, required: false},//string 시작 - 끝 시간
-    running_time: {type: Number, required: false},//분
+    start: {type: Date, required: false},
+    end: {type: Date, required: false},
+    running_time: {type: Number, required: false},//
 });
 
 
@@ -35,7 +36,7 @@ questSchema.statics.register = function(payload) {
 
 // userIdx가 participant_list 안에 있으면 completed: 1 append 해서 json 반환
 questSchema.statics.showTimeQuest = function() {
-    return this.find({"category": 0}, {"title": true, "period": true, "participant": true, "image": true});
+    return this.find({"category": 0}, {"title": true, "start": true, "end": true, "participant": true, "image": true});
 }
 
 questSchema.statics.showMainQuest = function(userIdx) {
@@ -113,5 +114,31 @@ questSchema.statics.showSubQuestList = function(userLevel){
                 .select('title level image participant');
 }
 
+questSchema.statics.showDetail = function (userIdx, questIdx) {
+    return this.findOne({'_id': questIdx}, {"title": true, "image": true, "start": true, "end": true, "participant": true, "how_to": true, "sub_title": true, "description": true, "completed": true});
+}
+
+questSchema.statics.showDetailCom = function (userIdx, questIdx) {
+    return this.findOne({'_id':questIdx, "participant_list.userIdx" : userIdx}, {"title": true, "image": true, "start": true, "end": true, "participant": true, "how_to": true, "sub_title": true, "description": true, "completed": true});
+}
+
+questSchema.statics.showImagesByQuest = function (questIdx) {
+
+    return this.find({'_id': questIdx})
+                .sort({"participant_list.completed_at": -1})
+                .select('participant_list.img_url')
+                .select('participant_list._id');
+}
+
+questSchema.statics.showRealTimeImages = function (questIdx) {
+    return this.find({'_id': questIdx})
+                .sort({"participant_list.completed_at": -1})
+                .select("participant_list.img_url participant_list.completed_at participant_list.userIdx");
+    // return this.find({"participant_list.userIdx" : mongoose.Types.ObjectId(userIdx)})
+    // .sort({"participant_list.completed_at": -1})
+    // .select('title level image')
+    // .select({ participant_list: {$elemMatch: {userIdx: mongoose.Types.ObjectId(userIdx)}}})
+    // .select('participant_list.completed_at');
+}
 
 module.exports = mongoose.model('quest', questSchema);
