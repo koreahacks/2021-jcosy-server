@@ -39,10 +39,18 @@ userSchema.statics.getUserLevel = function(userIdx){
                 .select('level');
 }
 
-userSchema.statics.participated = function(userIdx){
-    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, {$inc: {'main_stamp':1, 'sub_stamp':1}}, {new: true})
+userSchema.statics.mainParticipated = function(userIdx){
+    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, {$inc: {'main_stamp':1}}, {new: true})
 }
 
+userSchema.statics.subParticipated = function(userIdx){
+    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, {$inc: {'sub_stamp':1}}, {new: true})
+}
+
+userSchema.statics.updateLevel = function(userIdx, payload){
+    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, payload, {new: true});
+
+}
 /**
  * User.find()
     .where('name').equals('zerocho')

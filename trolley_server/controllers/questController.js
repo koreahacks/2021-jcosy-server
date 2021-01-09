@@ -174,19 +174,54 @@ const quest = {
             const payload = {
                 "userIdx": userIdx,
                 "img_url": imgUrl
-            }
-            console.log('payload : ', payload)
-            console.log('questIdx : ', questIdx);
+            };
             const appendedPartList = await QuestModel.updateParticipantList(payload,questIdx);
             const partInc = await QuestModel.participantIncrement(questIdx);
-            const userParticipated = await UserModel.participated(userIdx);
-            console.log('appendedPartList : ', appendedPartList);
-            console.log('partInc : ', partInc);
-            console.log('userParticipated : ', userParticipated);
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, userParticipated));
-            //사진 올리면 participant list에 추가되고
-            // participant +1되고
-            // userSchema에 level, main, sub 카운트 +1 해주기
+            //console.log('partInc : ', partInc.category);// 0: 타임어택, 1: 메인, 2: 서브
+            if(partInc.category==0){// 타임어택
+                const taPart = await UserModel.subParticipated(userIdx);
+            }else if(partInc.category==1){//메인
+                const mainPart = await UserModel.mainParticipated(userIdx);
+            }else if(partInc.category==2){//서브
+                const subPart = await UserModel.subParticipated(userIdx);
+            }
+            const userParticipated = await UserModel.getMypage(userIdx);
+            //console.log('userParticipated : ', userParticipated);
+
+            const user_main_stamp = userParticipated[0].main_stamp;
+            const user_sub_stamp = userParticipated[0].sub_stamp;
+            const user_level = userParticipated[0].level;
+
+            let updated_main_stamp = user_main_stamp;
+            let updated_sub_stamp = user_sub_stamp;
+            let updated_level = user_level;
+
+            if(user_level==1){
+                if (user_main_stamp==2 && user_sub_stamp>=1){
+                    updated_main_stamp = 0;
+                    updated_level += 1;
+                    updated_sub_stamp = user_sub_stamp - 1;
+                }
+            }else if(user_level==2){
+                if(user_main_stamp==2 && user_sub_stamp>=3){
+                    updated_main_stamp = 0;
+                    updated_level += 1;
+                    updated_sub_stamp = user_sub_stamp - 3;
+                }
+            }
+
+            const levPayload = {
+                level: updated_level,
+                main_stamp: updated_main_stamp,
+                sub_stamp: updated_sub_stamp
+            };
+            const updatedLevelResult = await UserModel.updateLevel(userIdx, levPayload);
+            //console.log('updatedLevelResult : ', updatedLevelResult);
+            
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.PARTICIPATED_SUCCESS, {
+                user_level: updatedLevelResult.level,
+                main_stamp: updatedLevelResult.main_stamp
+            }));
 
         }catch(err){
             console.log(err);

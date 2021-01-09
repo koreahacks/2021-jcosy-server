@@ -11,6 +11,10 @@ module.exports = {
     QUEST_REGISTER_FAIL: "퀘스트 등록 실패",
     QUEST_REGISTER_SUCCESS: "퀘스트 등록 성공",
 
+    // 후기 사진 업로드
+    PARTICIPATED_SUCCESS: "사진 인증 성공",
+    PARTICIPATED_FAIL: "사진 인증 실패",
+
     // 타임어택 조회
     READ_TIME_FAIL: "타임어택 조회 실패",
     READ_TIME_SUCCESS: "타임어택 조회 성공",

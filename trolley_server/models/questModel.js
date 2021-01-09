@@ -70,14 +70,6 @@ questSchema.statics.updateParticipantList = function(payload, questIdx) {
                                                         }}}, {new: true});
 }
 
-questSchema.statics.aUpdateParticipantList = function(userIdx, imgUrl, questIdx){
-    return this.findOneAndUpdate({"_id" : questIdx}, {$push: {
-                                                participant_list: {
-                                                    userIdx: userIdx,
-                                                    img_url: imgUrl
-                                                }}}, {new: true});
-}
-
 
 questSchema.statics.participantIncrement = function(questIdx){
     return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(questIdx)}, {$inc: {'participant':1}}, {new: true})
