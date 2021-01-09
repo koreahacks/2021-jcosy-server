@@ -31,6 +31,11 @@ questSchema.statics.register = function(payload) {
     return quest.save();
 }
 
+// userIdx가 participant_list 안에 있으면 completed: 1 append 해서 json 반환
+questSchema.statics.showTimeQuest = function(userIdx) {
+    return this.find({"category": 0}, {"title": true, "period": true, "participant": true, "image": true});
+}
+
 /**
 
 productSchema.statics.register = function(payload){
