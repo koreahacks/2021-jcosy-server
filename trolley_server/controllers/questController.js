@@ -23,7 +23,7 @@ const quest = {
     },
     showTimeQuest: async (req, res) => {
         const userIdx = req.decoded._id;
-        console.log('userIdx:', userIdx);
+        // console.log('userIdx:', userIdx);
         try {
             const result = await QuestModel.showTimeQuest();
             console.log(result);
@@ -40,48 +40,20 @@ const quest = {
         const userIdx = req.decoded._id;
         
         try {
-            // const result = await QuestModel.showMainQuest(userIdx);
-            // console.log(result);
-            // const questIdx = result._id;
             const cc = await QuestModel.selectCompleted(userIdx);
-            // console.log("cc: ", cc);
-
             const nc = await QuestModel.selectNotCompleted(userIdx);
-            // console.log("nc: ",  nc);
-            
+
             cc.forEach(e => {
                 e.completed = 1;
+                e.participant = e.participant_list.length;
             });
 
             nc.forEach(e => {
                 e.completed = 0;
+                e.participant = e.participant_list.length;
             });
 
             const result = cc.concat(nc);
-
-            // const result = await QuestModel.showMainQuest(userIdx);
-
-            // participant_list에 따라 참여자 수 세기
-            // var count = 0;
-            // for (var i in result) {
-            //     // console.log('part: ',i);
-            //     var list = result[i].participant_list;
-            //     list.forEach(e => {
-            //         count++;
-            //         if (e.userIdx == userIdx) {
-            //             console.log("true: ",e.userIdx);
-            //             console.log(userIdx);
-            //             result[i].completed = 1;
-            //         } else {
-            //             console.log("false: ", e.userIdx);
-            //             console.log(userIdx);
-            //             result[i].completed = 0;
-            //         }
-            //     })
-            //     result[i].participant = count;
-            //     count = 0;
-            // }
-            // console.log(count);
 
             if (!result) {
                 return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_MAIN_FAIL));
@@ -96,32 +68,25 @@ const quest = {
         const userIdx = req.decoded._id;
         
         try {
-            const result = await QuestModel.showSubQuest();
-            var count = 0;
-            for (var i in result) {
-                var list = result[i].participant_list;
-                list.forEach(e => {
-                    count++;
-                    if (e.userIdx == userIdx) {
-                        console.log("true: ",e.userIdx);
-                        console.log(userIdx);
-                        result[i].completed = 1;
-                    } else {
-                        console.log("false: ", e.userIdx);
-                        console.log(userIdx);
-                        result[i].completed = 0;
-                    }
-                })
-                result[i].participant = count;
-                count = 0;
-            }
+            const cc = await QuestModel.selectCompleted(userIdx);
+            const nc = await QuestModel.selectNotCompleted(userIdx);
 
-            const remainResult = await QuestModel.showRemainSubQuest();
-            // console.log(count);
-            if (!remainResult) {
-                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_SUB_FAIL));
+            cc.forEach(e => {
+                e.completed = 1;
+                e.participant = e.participant_list.length;
+            });
+
+            nc.forEach(e => {
+                e.completed = 0;
+                e.participant = e.participant_list.length;
+            });
+
+            // const result = cc.concat(nc);
+
+            if (!nc) {
+                return res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.READ_MAIN_FAIL));
             }
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_SUB_SUCCESS, remainResult));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_MAIN_SUCCESS, nc));
         } catch (err) {
             console.log(err);
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
