@@ -20,6 +20,9 @@ module.exports = {
     GET_MY_INFO_SUCCESS: "내 정보 가져오기 성공",
     GET_RANKING_SUCCESS: "랭킹 조회 성공",
     STAMP_POP_UP_SUCCESS: "스탬프 팝업창 조회 성공",
+    NO_HISTORY: "지금까지 인증한 퀘스트가 없습니다.",
+    GET_HISTORY_SUCCESS: "인증한 퀘스트 조회 성공",
+
     // 메인 조회
     READ_MAIN_FAIL: "메인 조회 실패",
     READ_MAIN_SUCCESS: "메인 조회 성공",
@@ -27,6 +30,7 @@ module.exports = {
     // 서브 조회
     READ_SUB_FAIL: "서브 조회 실패",
     READ_SUB_SUCCESS: "서브 조회 성공",
+    READ_SUB_ALL: "서브 더보기 조회 성공",
 
     // 인증
     EMPTY_TOKEN: '토큰 값이 없습니다.',

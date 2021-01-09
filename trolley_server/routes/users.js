@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const upload = require('../modules/multer');
 const UserController = require('../controllers/userController');
-const authMiddleware = require('../middleware/auth');
+const authMiddleware = require('../middlewares/auth');
 
 router.post('/register', upload.single('image'), UserController.register);
 router.get('/mypage', authMiddleware.checkToken, UserController.getMyPage);

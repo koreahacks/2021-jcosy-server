@@ -33,6 +33,16 @@ userSchema.statics.getTop10Rank = function(){
             .select('profileImg name');
 }
 
+userSchema.statics.getUserLevel = function(userIdx){
+    return this.find()
+                .where('_id').equals(mongoose.Types.ObjectId(userIdx))
+                .select('level');
+}
+
+userSchema.statics.participated = function(userIdx){
+    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(userIdx)}, {$inc: {'main_stamp':1, 'sub_stamp':1}}, {new: true})
+}
+
 /**
  * User.find()
     .where('name').equals('zerocho')

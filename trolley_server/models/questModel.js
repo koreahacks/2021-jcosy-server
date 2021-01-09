@@ -70,51 +70,35 @@ questSchema.statics.updateParticipantList = function(payload, questIdx) {
                                                         }}}, {new: true});
 }
 
-/**
-
-productSchema.statics.register = function(payload){
-    const product = new this(payload);
-    return product.save();
-};
-
-productSchema.statics.showAllById = function(_id){
-    return this.find().sort({date: -1})
-                .where('userIdx').equals(_id)
-                .populate("userIdx");//join과 같은 기능
-};
-
-productSchema.statics.showProductsBySubCategory = function(_id, subCategoryIdx){
-    return this.find().sort({date: -1})
-                .where('subCategory').equals(subCategoryIdx)
-                .where('like').equals(false)
-                .where('userIdx').equals(_id)
-                .populate('userIdx');
-};
-
-productSchema.statics.showByMainCategory = function(_id, mainCategoryIdx){
-    return this.find().sort({date: -1})
-                .where('mainCategory').equals(mainCategoryIdx)
-                .where('like').equals(false)
-                .where('userIdx').equals(_id)
-                .populate('userIdx');
-};
-
-productSchema.statics.showOneProductDetail = function(_id, productIdx){
-    return this.find()
-                .where('_id').equals(mongoose.Types.ObjectId(productIdx))
-                .where('userIdx').equals(_id)
-                .populate('userIdx');
-};
-
-// _id에 해당하는 document에서 payload(바꿔야하는 key-value 쌍 그 자체)로 바꿔라
-// {new: true}이면 update한 값 리턴해줌
-productSchema.statics.deleteOneProduct = function(_id, payload){
-    return this.findOneAndUpdate({_id}, payload, {new: true});
-};
-
-productSchema.statics.heartClicked = function(_id, payload){
-    return this.findOneAndUpdate({_id}, payload, {new: true});
+questSchema.statics.aUpdateParticipantList = function(userIdx, imgUrl, questIdx){
+    return this.findOneAndUpdate({"_id" : questIdx}, {$push: {
+                                                participant_list: {
+                                                    userIdx: userIdx,
+                                                    img_url: imgUrl
+                                                }}}, {new: true});
 }
- */
+
+
+questSchema.statics.participantIncrement = function(questIdx){
+    return this.findOneAndUpdate({'_id':mongoose.Types.ObjectId(questIdx)}, {$inc: {'participant':1}}, {new: true})
+}
+
+
+questSchema.statics.showHistory = function(userIdx){
+    return this.find({"participant_list.userIdx" : mongoose.Types.ObjectId(userIdx)})
+                .sort({"participant_list.completed_at": -1})
+                .select('title level image')
+                .select({ participant_list: {$elemMatch: {userIdx: mongoose.Types.ObjectId(userIdx)}}})
+                .select('participant_list.completed_at');
+}
+
+questSchema.statics.showSubQuestList = function(userLevel){
+    return this.find()
+                .where('category').equals(2)//서브 퀘스트
+                .where('ad').equals(0)//광고 아님
+                .where('level').gt(0).lt(userLevel+1)
+                .select('title level image participant');
+}
+
 
 module.exports = mongoose.model('quest', questSchema);
