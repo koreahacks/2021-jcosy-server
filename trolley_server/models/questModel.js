@@ -26,6 +26,8 @@ const questSchema = new mongoose.Schema({
     start: {type: Date, required: false},
     end: {type: Date, required: false},
     running_time: {type: Number, required: false},//
+},{
+    timestamps: {currentTime: () => Date.now() + 3600000 * 9}, // 한국 시간대
 });
 
 
@@ -134,11 +136,6 @@ questSchema.statics.showRealTimeImages = function (questIdx) {
     return this.find({'_id': questIdx})
                 .sort({"participant_list.completed_at": -1})
                 .select("participant_list.img_url participant_list.completed_at participant_list.userIdx");
-    // return this.find({"participant_list.userIdx" : mongoose.Types.ObjectId(userIdx)})
-    // .sort({"participant_list.completed_at": -1})
-    // .select('title level image')
-    // .select({ participant_list: {$elemMatch: {userIdx: mongoose.Types.ObjectId(userIdx)}}})
-    // .select('participant_list.completed_at');
 }
 
 module.exports = mongoose.model('quest', questSchema);
