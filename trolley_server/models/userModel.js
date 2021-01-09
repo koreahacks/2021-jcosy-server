@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    profileImg: {type: String, required: false},
+    profileImg: {type: String, default: "https://sopt-server-gain.s3.ap-northeast-2.amazonaws.com/1610223197550.png"},
     email: {type: String, required: true},
     level: {type: Number, default: 1},
     //ranking: {type: Number, required: true},
