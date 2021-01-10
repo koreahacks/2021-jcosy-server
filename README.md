@@ -2,6 +2,7 @@
 	<img src="./trolley_server/public/images/trolly.png" width="300">
 </div>
 
+<center>✨베스트 서비스상✨</center>
 
 ## 1. Trolly란?
 
