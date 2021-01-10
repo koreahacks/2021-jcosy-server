@@ -51,7 +51,7 @@ MZ세대 롤코족의 주류인 대학생들을 위해 저희 서비스는 트�
 
 ## 4. Architecture
 * cloud server: NCP, AWS-s3
-* Back-end: Node.js, express
+* Back-end: Node.js, express, mongoDB
 * Front-end: Mobile-Android
 
 
